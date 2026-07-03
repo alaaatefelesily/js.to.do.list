@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TO-DO List</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: url('alaapro.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            backdrop-filter: blur(60px);
+            padding: 20px;
+            text-align: center;
+            display: block;
+            flex-direction: column;
+            align-items: center;
+            color: rgb(255, 255, 255);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            min-height: 94vh;
+        }
+        h1 {
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            text-shadow: 2px 2px 4px #c4bdb3;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            font-size: 1.25rem;
+        }
+        h2{
+            font-size: 2rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+        div.main {
+            background: url('alaapro.jpg') ;
+            background-size: cover;  
+            
+            margin: 2px auto;
+            width: 90%;
+            max-width: 450px; 
+            padding: 20px;
+            border: 1px solid rgba(122, 97, 64, 0.25);
+            border-radius: 18px;
+            box-shadow: 0 4px 12px rgb(172, 147, 141), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+        }
+        div.main:hover {
+            box-shadow: 0 8px 24px rgba(237, 232, 232, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+            transform: translateY(-3px);
+        }
+        
+        input {
+            width: 88%;
+            padding: 13px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 14px;
+            margin-top: 20px;
+            box-shadow:0 4px 12px rgba(193, 188, 188, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+            color: rgb(255, 255, 255);
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(4px);
+            transition: all 0.25s ease;
+
+        }
+        input::placeholder {
+            color: rgb(204, 194, 194);
+            font-weight: bold;
+        }
+        input:focus {
+            outline: none;
+            scale: 1.08;
+        }
+        button {
+            margin:7px;
+            padding:8px 18px;
+            
+            font-size:13px;
+            color:#d5c4c4;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+
+            background:rgba(255,255,255,0.12);
+            backdrop-filter:blur(12px);
+            -webkit-backdrop-filter:blur(12px);
+
+            border:1px solid rgba(255,255,255,0.25);
+            border-radius:14px;
+
+            box-shadow:
+            0 4px 12px rgba(0,0,0,.25),
+            inset 0 1px 1px rgba(255,255,255,.35);
+
+            cursor:pointer;
+            transition:all .25s ease;
+        }
+        button:hover{
+        background:rgba(255,255,255,0.22);
+        border-color:rgba(255,255,255,.45);
+        box-shadow:
+        0 8px 24px rgba(255, 254, 254, 0.25),
+        inset 0 1px 1px rgba(240, 235, 235, 0.35);
+
+        transform:translateY(-2px);
+        }
+        button:active{
+        transform:scale(0.90);
+        }
+        ul {
+            list-style: none;
+            padding-right: 2px;
+            padding-left: 2px;
+            margin-top: 20px;
+            overflow-y: auto;
+            max-height: 300px;
+            color: rgb(255, 255, 255);
+            font-weight: bold;
+            font-family: open sans, sans-serif;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 18px;
+            box-shadow:0 2px 8px rgb(245, 244, 244);
+            
+            
+        }
+        ul::-webkit-scrollbar {
+            width: 8px;
+            overflow: hidden;
+
+        }
+        ul::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        ul li {
+            padding: 12px 15px;
+            margin: 4px;
+            text-align: left;
+            word-break: break-word;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            border-radius: 14px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+        }
+         ul li button {
+            margin: 1px;
+            padding: 4px 7px;
+        }
+        #clear-btn {
+            margin-top: 20px;
+        }
+
+        
+    </style>
+    <div class="main">
+        <h1>JS project</h1>
+        <h2>TO-DO List</h2>
+
+        <input id="task" placeholder="Enter a task">
+
+        <button onclick="addTask()">Add Task</button>
+        <ul id="list"></ul>
+
+        <button id="clear-btn" onclick="clearAll()">Clear All</button>
+    </div>
+    <script>
+        let tasks = [];
+
+        function displayTasks(){
+            let html ="";
+            for(let i=0; i<tasks.length; i++){
+                html += "<li>" + tasks[i] + 
+                "<button onclick='removeTask(" + i + ")'>Delete</button></li>";
+                }
+            document.getElementById("list").innerHTML = html;
+        }
+        function addTask(){
+            let taskInput = document.getElementById("task");
+            let text = taskInput.value;
+            if(text ==="") {
+                return;
+            }
+            tasks.push(text);
+            taskInput.value = "";
+            saveTasks();
+            displayTasks();
+        }
+
+        function removeTask(i) {
+            tasks.splice(i, 1);
+            saveTasks();
+            displayTasks();
+        }
+        function clearAll() {
+            tasks = [];
+            saveTasks();
+            displayTasks();
+        }
+        function saveTasks() {
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+        }
+        function loadTasks() {
+            let saved = localStorage.getItem("tasks");
+            if (saved !== null) {
+                tasks = JSON.parse(saved);
+            }
+        }
+        
+        loadTasks();
+        displayTasks();
+
+        // التعديل الجديد: تشغيل زر الإضافة عند الضغط على Enter
+        let inputField = document.getElementById("task");
+        inputField.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // لمنع أي سلوك افتراضي
+                addTask();
+            }
+        });
+    </script>
+</body>
+</html>  
